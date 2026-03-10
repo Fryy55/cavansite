@@ -4,7 +4,9 @@ Offers general purpose classes/utilities I made for using in my Qt apps.
 
 # Features
 - Github Actions
-    - 
+    - `Fryy55/cavansite/actions/find-qt-version` for extracting the Qt version from a file
+    - `Fryy55/cavansite/actions/build-and-package` for building and packaging Qt apps for different platforms
+    Both Actions are made for and supposed to be used with [Fryy55/qt-cmake-template](https://github.com/Fryy55/qt-cmake-template)'s CI
 
 # Usage
 ## Installing
