@@ -24,6 +24,7 @@ runs:
         version: ${{ inputs.qt-ver }}
         cache: true
 
+
     - name: Configure CMake
       shell: ${{ inputs.shell }}
       run: |
@@ -35,6 +36,8 @@ runs:
       shell: ${{ inputs.shell }}
       run: cmake --build ./build --config Release
 
+
+    # platform specific deps
     - name: Install linuxdeployqt
       if: ${{ runner.os == 'Linux' }}
       uses: Fryy55/install-linuxdeployqt-action@v1.0.0
