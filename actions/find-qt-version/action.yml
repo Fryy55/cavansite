@@ -1,0 +1,37 @@
+name: Find Qt version
+description: Looks at the .github/workflows/qt/VERSION to find the version to use
+
+outputs:
+  qt-ver:
+    description: Extracted version (e.g. `6.10.2`)
+    value: ${{ steps.save_ver.outputs.qt_ver }}
+
+runs:
+  using: composite
+  steps:
+    - name: Verify platform
+      shell: bash
+      if: ${{ runner.os != 'Linux' }}
+      run: |
+        echo "::error::This Action is supposed to be ran on Linux (currently using ${{ runner.os }})"
+        exit 1
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Save Qt version
+      id: save_ver
+      shell: bash
+      run: |
+        if [ -f ./.github/workflows/qt/VERSION ]; then
+          export QT_VER=$(cat ./.github/workflows/qt/VERSION)
+
+          echo "::notice::Qt version: $QT_VER"
+
+          echo "qt_ver=$QT_VER" >> $GITHUB_OUTPUT
+        else
+          echo "::error::Could not locate .github/workflows/qt/VERSION"
+          echo "::error::Please run the CMake configuration locally at least once."
+
+          exit 1
+        fi

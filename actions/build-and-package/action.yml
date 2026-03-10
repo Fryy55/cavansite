@@ -1,0 +1,104 @@
+name: Build and package a Qt app
+description: Builds a Qt app for the current platform and packages it, uploading as an artifact
+
+inputs:
+  qt-ver:
+    description: Qt version to install
+    required: true
+  shell:
+    description: Shell to use
+    required: true
+  bin-name:
+    description: What to name the final binary artifact
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ inputs.qt-ver }}
+        cache: true
+
+    - name: Configure CMake
+      shell: ${{ inputs.shell }}
+      run: |
+        mkdir ./build
+        cd ./build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -S .. -B . -G Ninja
+
+    - name: Build the app
+      shell: ${{ inputs.shell }}
+      run: cmake --build ./build --config Release
+
+    - name: Install linuxdeployqt
+      if: ${{ runner.os == 'Linux' }}
+      uses: Fryy55/install-linuxdeployqt-action@v1.0.0
+
+    - name: Install Oracle Instant Client
+      if: ${{ runner.os == 'Linux' && runner.arch == 'X64' }}
+      uses: iamazeem/setup-oracle-instant-client-action@v2
+
+
+    # platform specific packaging
+    - name: Bundle Windows
+      if: ${{ runner.os == 'Windows' }}
+      shell: pwsh
+      run: |
+        $PROJECT_NAME = [System.IO.Path]::GetFileNameWithoutExtension((ls ./bin))
+        windeployqt --release --compiler-runtime ./bin/$PROJECT_NAME.exe
+        Compress-Archive -Path ./bin/* -DestinationPath ./$PROJECT_NAME-windows.zip
+
+    - name: Bundle Linux
+      if: ${{ runner.os == 'Linux' }}
+      shell: bash
+      run: |
+        export PROJECT_NAME=$(ls ./bin)
+        export PROJECT_ROOT=$(pwd)
+        # copy the binary, the .desktop and the icon to the temp dir
+        cd $(mktemp -d)
+        cp $PROJECT_ROOT/bin/$PROJECT_NAME .
+        cp $PROJECT_ROOT/build/platform/linux/$PROJECT_NAME.desktop .
+        cp $PROJECT_ROOT/resources/icon.png .
+        # package and move to root
+        linuxdeployqt ./$PROJECT_NAME -bundle-non-qt-libs -unsupported-allow-new-glibc -exclude-libs=libqsqlmimer
+        linuxdeployqt ./$PROJECT_NAME -appimage -unsupported-allow-new-glibc
+        mv ./*.AppImage $PROJECT_ROOT/
+
+    - name: Bundle MacOS
+      if: ${{ runner.os == 'MacOS' }}
+      shell: bash
+      run: |
+        cd ./bin
+        export PROJECT_NAME=$(basename $(ls) .app)
+        macdeployqt ./$PROJECT_NAME.app
+        export PLATFORM_PATH=../resources/platform/macos
+        export GEN_PATH=../build/platform/macos
+        # set up .dmg background
+        cp $PLATFORM_PATH/dmg-background.png ./dmg-background@2x.png
+        sips --resampleWidth 800 ./dmg-background@2x.png -o ./dmg-background.png > /dev/null
+        # copy the generated icon, json and guide
+        cp $GEN_PATH/icon.icns ./$PROJECT_NAME.icns
+        cp $GEN_PATH/dmg.json .
+        cp "$GEN_PATH/READ IF YOU HAVE PROBLEMS RUNNING" .
+        # log the structure
+        echo 'Current ./bin/ directory:'
+        ls
+        # package and move to root
+        export DMG_NAME=$PROJECT_NAME.dmg
+        npx appdmg@0.6.6 ./dmg.json ./$DMG_NAME
+        mv ./$DMG_NAME ../$DMG_NAME
+
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: qt-build-${{ inputs.bin-name }}
+        path: |
+          ./*.zip
+          ./*.AppImage
+          ./*.dmg
