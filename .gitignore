@@ -1,0 +1,4 @@
+# local stuff
+build/
+.cache/
+test/

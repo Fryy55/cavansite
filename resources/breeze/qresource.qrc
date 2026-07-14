@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix='/_cavansite/breeze'>
+    <file>auto-d.svg</file>
+    <file>auto-l.svg</file>
+    <file>dark-d.svg</file>
+    <file>dark-l.svg</file>
+    <file>light-d.svg</file>
+    <file>light-l.svg</file>
+  </qresource>
+</RCC>
