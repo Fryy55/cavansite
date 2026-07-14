@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix='/cavansite/ui'>
+    <file>help-button-d.svg</file>
+    <file>help-button-l.svg</file>
+  </qresource>
+</RCC>
