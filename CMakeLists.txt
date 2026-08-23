@@ -11,6 +11,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 
     test/*.*
 )
+
 if (PROJECT_IS_TOP_LEVEL)
     find_package(QT NAMES Qt6)
     find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Svg)
@@ -21,15 +22,13 @@ if (PROJECT_IS_TOP_LEVEL)
 
     qt_add_executable(${PROJECT_NAME} ${SOURCES})
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        Qt${QT_VERSION_MAJOR}::Widgets
-        Qt${QT_VERSION_MAJOR}::Svg
-    )
-
     set(CAVANSITE_ADD_BREEZE all)
 else()
     add_library(${PROJECT_NAME} STATIC ${SOURCES})
 endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
 # resources
 target_sources(${PROJECT_NAME} PUBLIC resources/ui/qresource.qrc)
 

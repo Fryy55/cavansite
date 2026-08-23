@@ -1,3 +1,5 @@
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Svg)
+
 find_package(Python COMPONENTS Interpreter)
 
 
