@@ -44,6 +44,7 @@ runs:
 
     # platform specific deps
     - name: Install new GCC
+      if: ${{ runner.os == 'Linux' }}
       uses: egor-tensin/setup-gcc@v2
       with:
         version: 14
