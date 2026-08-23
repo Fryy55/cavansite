@@ -30,18 +30,6 @@ runs:
         cache: true
 
 
-    - name: Configure CMake
-      shell: ${{ inputs.shell }}
-      run: |
-        mkdir ./build
-        cd ./build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET="13.0" -S .. -B . -G Ninja
-
-    - name: Build the app
-      shell: ${{ inputs.shell }}
-      run: cmake --build ./build --config Release
-
-
     # platform specific deps
     - name: Install new GCC
       if: ${{ runner.os == 'Linux' }}
@@ -56,6 +44,18 @@ runs:
     - name: Install Oracle Instant Client
       if: ${{ runner.os == 'Linux' && runner.arch == 'X64' }}
       uses: iamazeem/setup-oracle-instant-client-action@v2
+
+
+    - name: Configure CMake
+      shell: ${{ inputs.shell }}
+      run: |
+        mkdir ./build
+        cd ./build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET="13.0" -S .. -B . -G Ninja
+
+    - name: Build the app
+      shell: ${{ inputs.shell }}
+      run: cmake --build ./build --config Release
 
 
     # platform specific packaging
