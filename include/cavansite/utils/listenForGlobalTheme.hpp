@@ -5,14 +5,14 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
-#include <functional>
+#include <std23/move_only_function.h>
 
 
 #define CAVANSITE_GLOBAL_THEME_PARAM Qt::ColorScheme mode = QGuiApplication::styleHints()->colorScheme()
 
 namespace cavansite::utils {
 
-using GlobalThemeCallback = std::move_only_function<void(Qt::ColorScheme mode)>;
+using GlobalThemeCallback = std23::move_only_function<void(Qt::ColorScheme mode)>;
 
 inline void listenForGlobalTheme(GlobalThemeCallback&& callback) noexcept {
 	QObject::connect(

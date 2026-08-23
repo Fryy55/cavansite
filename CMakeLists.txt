@@ -60,5 +60,8 @@ endif()
 
 # libs
 include(cmake/CPM.cmake)
+
 CPMAddPackage("gh:Fryy55/aurora@1.1.6")
-target_link_libraries(${PROJECT_NAME} PUBLIC Aurora)
+CPMAddPackage("gh:zhihaoy/nontype_functional#main")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC Aurora std23::nontype_functional)

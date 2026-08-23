@@ -60,7 +60,7 @@ There is also a general "include everything" header (`<cavansite/cavansite.hpp>`
 
 ### Breeze Themes
 If you want to include _Breeze themes_, make sure to:
-1) Link against `Qt6::Svg`
+1) Link against `Qt6::Svg` module
 2) Set the `CAVANSITE_ADD_BREEZE` variable to _themes you want to include from the following list:_ `red,yellow,orange,green,cyan,blue,purple,pink,mono` (e.g. `set(CAVANSITE_ADD_BREEZE red,blue,mono,purple)`) _before adding the library with CPM_
 
 You can also set the variable to `all` to include all themes (`set(CAVANSITE_ADD_BREEZE all)`)

@@ -6,7 +6,7 @@
 
 #include <exception>
 #include <string>
-#include <functional>
+#include <std23/move_only_function.h>
 
 
 namespace cavansite {
@@ -59,7 +59,7 @@ namespace utils {
 
 void handleException(std::exception const& exception) noexcept;
 
-using ExceptionHandler = std::move_only_function<void(std::exception const&) noexcept>;
+using ExceptionHandler = std23::move_only_function<void(std::exception const&) noexcept>;
 void setExceptionHandler(ExceptionHandler&& handler) noexcept;
 
 } // namespace utils
