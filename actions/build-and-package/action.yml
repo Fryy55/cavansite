@@ -18,11 +18,6 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v7
 
-    - name: Install new LLVM and Clang
-      uses: KyleMayes/install-llvm-action@v2
-      with:
-        version: 21
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
@@ -31,11 +26,17 @@ runs:
 
 
     # platform specific deps
+    - name: Install new LLVM and Clang
+      if: ${{ runner.os != 'macOS' }}
+      uses: KyleMayes/install-llvm-action@v2
+      with:
+        version: 21
+
     - name: Install new GCC
       if: ${{ runner.os == 'Linux' }}
       uses: egor-tensin/setup-gcc@v2
       with:
-        version: 14
+        version: 15
 
     - name: Install linuxdeployqt
       if: ${{ runner.os == 'Linux' }}
