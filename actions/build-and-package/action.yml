@@ -18,7 +18,7 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v7
 
-    - name: Install LLVM and Clang
+    - name: Install new LLVM and Clang
       uses: KyleMayes/install-llvm-action@v2
       with:
         version: 21
@@ -35,7 +35,7 @@ runs:
       run: |
         mkdir ./build
         cd ./build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -S .. -B . -G Ninja
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET="13.0" -S .. -B . -G Ninja
 
     - name: Build the app
       shell: ${{ inputs.shell }}
@@ -43,6 +43,11 @@ runs:
 
 
     # platform specific deps
+    - name: Install new GCC
+      uses: egor-tensin/setup-gcc@v2
+      with:
+        version: 14
+
     - name: Install linuxdeployqt
       if: ${{ runner.os == 'Linux' }}
       uses: Fryy55/install-linuxdeployqt-action@v1.0.0
