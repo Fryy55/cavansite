@@ -18,6 +18,11 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v7
 
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v2
+      with:
+        version: 22
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
