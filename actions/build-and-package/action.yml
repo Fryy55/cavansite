@@ -52,7 +52,7 @@ runs:
       run: |
         mkdir ./build
         cd ./build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET="13.0" -S .. -B . -G Ninja
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_OSX_DEPLOYMENT_TARGET="15.0" -S .. -B . -G Ninja
 
     - name: Build the app
       shell: ${{ inputs.shell }}
