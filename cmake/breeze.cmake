@@ -35,7 +35,7 @@ file(REMOVE_RECURSE ${BREEZE_OUT_DIR})
 add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E rm -rf "${BREEZE_OUT_DIR}"
     COMMAND ${Python_EXECUTABLE} configure.py --extensions=all --styles=${BREEZE_SCRIPT_THEMES} --resource breeze.qrc --output-dir=${BREEZE_OUT_DIR}
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/breeze"
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/breeze"
     OUTPUT "${BREEZE_QRC}"
     VERBATIM
     COMMENT "Generating Breeze themes"
@@ -55,4 +55,4 @@ list(LENGTH BREEZE_THEME_LIST BREEZE_THEME_COUNT)
 target_compile_definitions(${PROJECT_NAME} PUBLIC CAVANSITE_ADD_BREEZE=${BREEZE_THEME_COUNT})
 
 # mode svgs
-target_sources(${PROJECT_NAME} PUBLIC resources/breeze/qresource.qrc)
+target_sources(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/resources/breeze/qresource.qrc")
