@@ -20,8 +20,6 @@ runs:
 
     - name: Install new LLVM and Clang
       uses: KyleMayes/install-llvm-action@v2
-      env:
-        FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       with:
         version: 21
 
