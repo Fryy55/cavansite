@@ -11,6 +11,10 @@ inputs:
   bin-name:
     description: What to name the final binary artifact
     required: true
+  qt-modules:
+    description: Qt modules to install (https://github.com/jurplel/install-qt-action#modules)
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -28,6 +32,7 @@ runs:
       with:
         version: ${{ inputs.qt-ver }}
         cache: true
+        modules: ${{ inputs.qt-modules }}
 
 
     # platform specific deps
