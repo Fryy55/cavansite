@@ -33,6 +33,8 @@ runs:
         version: ${{ inputs.qt-ver }}
         cache: true
         modules: ${{ inputs.qt-modules }}
+        #! TEMPORARY
+        aqtsource: git+https://github.com/miurahr/aqtinstall.git@16db45a70b5905ad596941b223469bc86a56901e
 
 
     # platform specific deps
