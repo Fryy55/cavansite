@@ -104,7 +104,8 @@ runs:
         ls
         # package and move to root
         export DMG_NAME=$PROJECT_NAME.dmg
-        npx appdmg@0.6.6 ./dmg.json ./$DMG_NAME
+        npm i appdmg@0.6.6 --build-from-source
+        ./node_modules/.bin/appdmg ./dmg.json ./$DMG_NAME
         mv ./$DMG_NAME ../$DMG_NAME
 
 
