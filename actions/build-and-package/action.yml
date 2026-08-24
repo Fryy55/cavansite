@@ -104,8 +104,7 @@ runs:
         ls
         # package and move to root
         export DMG_NAME=$PROJECT_NAME.dmg
-        brew install sqlite
-        DYLD_LIBRARY_PATH="/opt/homebrew/opt/sqlite/lib:$DYLD_LIBRARY_PATH" npx appdmg@0.6.6 ./dmg.json ./$DMG_NAME
+        npx appdmg@0.6.6 ./dmg.json ./$DMG_NAME
         mv ./$DMG_NAME ../$DMG_NAME
 
 
